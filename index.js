@@ -19,7 +19,7 @@ const connectDB=async()=>{
 }
 
 app.get('/',(req,res)=>{
-    res.send("server is running fine");
+    res.send("server is running fine V2");
 })
 
 app.get('/connectionToFrontend',(req,res)=>{
