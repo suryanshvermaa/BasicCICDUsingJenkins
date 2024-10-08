@@ -1,10 +1,10 @@
-pipeline{
+pipeline {
     agent any 
     stages{
         stage("cloning"){
             steps{
-                echo "cloning is started",
-                git url: 'https://github.com/suryanshvermaa/sapleBackendForDeployment.git',branch: 'main'
+                echo "cloning is started"
+                git url:'https://github.com/suryanshvermaa/sapleBackendForDeployment.git',branch: 'main'
                 echo "cloning successful"
             }
         }
