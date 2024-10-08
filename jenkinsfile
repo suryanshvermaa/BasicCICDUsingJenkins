@@ -1,0 +1,37 @@
+pipeline{
+    agent any 
+    stages{
+        stage("cloning"){
+            steps{
+                echo "cloning is started",
+                git url: 'https://github.com/suryanshvermaa/sapleBackendForDeployment.git',branch: 'main'
+                echo "cloning successful"
+            }
+        }
+        stage("building"){
+            steps{
+                echo "building started"
+                sh "docker build -t sampleexpressapp ."
+                echo "building completed"
+            }
+        }
+        stage("pushing"){
+            steps{
+                echo "pushing started"
+                withCredentials([usernamePassword(credentialsId:"dockerhubCredentials",passwordVariable:"dockerPass",usernameVariable:"dockerUser")]){
+                    sh "docker login -u ${env.dockerUser} -p ${env.dockerPass}"
+                    sh "docker tag sampleexpressapp ${env.dockerUser}/sampleexpressapp:latest"
+                    sh "docker push ${env.dockerUser}/sampleexpressapp:latest"
+                    echo "pushing completed"
+                }
+            }
+        }
+        stage("deployment"){
+            steps{
+                echo "deployment started"
+                sh "docker compose down -d && docker compose up -d"
+                echo "deployment done"
+            }
+        }
+    }
+}
